@@ -112,8 +112,12 @@ public final class LDAPHelper {
                 for (int i = 0; i < memberOf.size(); i++) {
                     try {
                         Attributes atts = context.getAttributes(memberOf.get(i).toString(), new String[]{"CN"});
-                        Attribute att = atts.get("CN");
-                        memberships.add(att.get().toString());
+                        if (atts != null ) {
+                            Attribute att = atts.get("CN");
+                            memberships.add(att.get().toString());
+                        } else {
+                            LOGGER.info("No attributes found for " + memberOf.get(i));
+                        }
                     } catch (PartialResultException e) {
                         // ignore
                     }
